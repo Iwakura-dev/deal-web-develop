@@ -1,0 +1,27 @@
+@import '../../../styles/variables';
+
+.row {
+  color: $darkTableColor;
+  cursor: pointer;
+
+  td {
+    height: 52px;
+    position: relative;
+    padding: 0 15px;
+
+    &:first-of-type {
+      padding: 0 15px 0 0;
+    }
+
+    &:last-of-type {
+      padding: 0 0 0 15px;
+    }
+  }
+
+
+  border-bottom: 1px solid $lightGrayColor;
+
+  &:hover {
+    background: $lightGrayColor;
+  }
+}

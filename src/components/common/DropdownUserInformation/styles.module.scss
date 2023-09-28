@@ -1,0 +1,121 @@
+@import 'src/styles/variables';
+
+.profileInfo {
+  z-index: 10;
+  position: relative;
+
+  .profileButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    width: 213px;
+    border-radius: 32px;
+    background: $lightGrayColor;
+    border: none;
+    cursor: pointer;
+
+    &.active {
+      background: linear-gradient(0deg, rgba(46, 49, 50, 0.16), rgba(46, 49, 50, 0.16)), $lightGrayColor;
+    }
+  }
+
+  .profileHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+
+  .profileInformationBlock {
+    position: absolute;
+    top: 64px;
+    right:0;
+    background-color: white;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    align-items: flex-start;
+    padding: 16px 16px 12px;
+    width: 240px;
+    height: 206px;
+    box-shadow: 0 12px 32px rgba(46, 49, 50, 0.12);
+    border-radius: 12px;
+
+    &:not(:last-child)::before {
+      content: "";
+      border-bottom: 1px solid black;
+      margin-bottom: 10px; /* adjust this as needed */
+    }
+
+    .profileInfoRow {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+
+      &:not(:last-child)::after {
+        content: "";
+        border-bottom: 1px solid $lightGrayColor;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 13px);
+      }
+
+      .title {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        color: #747778;
+      }
+
+      .addressBlock {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+        display: flex;
+        height: 20px;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .networkBlock {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        font-weight: 500;
+        font-size: 14px;
+        align-items: center;
+        line-height: 16px;
+
+        .dot {
+          height: 8px;
+          width: 8px;
+          border-radius: 50%;
+          background: #27A972;
+        }
+      }
+    }
+
+    .disconnectWalletButton {
+      background-color: transparent;
+      border: none;
+      margin: 0;
+      padding: 0;
+      font: inherit;
+      height: 40px;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      cursor: pointer;
+    }
+  }
+}

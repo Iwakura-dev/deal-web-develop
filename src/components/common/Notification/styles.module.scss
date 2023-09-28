@@ -1,0 +1,57 @@
+@import "../../../styles/variables";
+
+.notificationContainer {
+  z-index: 10;
+  position: relative;
+
+  .notificationButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    width: 56px;
+    border-radius: 32px;
+    background: $lightGrayColor;
+    border: none;
+    cursor: pointer;
+
+    &.active {
+      background: linear-gradient(0deg, rgba(46, 49, 50, 0.16), rgba(46, 49, 50, 0.16)), $lightGrayColor;
+    }
+  }
+
+  .notificationList {
+    height: 328px;
+    overflow-y:auto;
+    position: absolute;
+    top: 64px;
+    left: 50%;
+    transform: translate(-50%);
+    width: 296px;
+    background-color: white;
+    box-shadow: 0 12px 32px rgba(46, 49, 50, 0.12);
+    border-radius: 12px;
+
+    .header {
+      display: flex;
+      padding: 0 16px;
+      flex-direction: row;
+      gap: 8px;
+      height: 48px;
+      align-items: center;
+      border-bottom: 1px solid $lightGrayColor;
+
+      .title {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 24px;
+      }
+      .amount {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 24px;
+        color: $midGrayColor;
+      }
+    }
+  }
+}

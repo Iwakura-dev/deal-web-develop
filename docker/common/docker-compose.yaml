@@ -1,0 +1,29 @@
+version: '3'
+services:
+  nginx:
+    image: gitlab.icerockdev.com:4567/docker/nginx/nginx-alpine:latest
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      SSL: "on"
+      SSL_DOMAIN: '${SERVER_NAME}'
+      SSL_EMAIL: 'ssl@icerockdev.com'
+      SERVER_NAME: ${SERVER_NAME}
+    volumes:
+      - ./nginx-data:/etc/letsencrypt
+      - ./nginx.conf.tmpl:/etc/nginx/templates/default.conf.tmpl
+    logging: &logging_config
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+    stop_grace_period: 30s
+    restart: always
+    depends_on:
+      - nextjs
+  nextjs:
+    image: ${IMAGE_NEXTJS}
+    stop_grace_period: 30s
+    logging: *logging_config
+    restart: always

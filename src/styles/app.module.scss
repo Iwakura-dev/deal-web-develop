@@ -1,0 +1,25 @@
+@import "variables";
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: $backgroundColor;
+  overflow-y: auto;
+
+  .content {
+    width: $desktopMaxWidth;
+    padding: 34px 120px;
+    display: flex;
+    gap: 64px;
+    flex-direction: column;
+  }
+}
+@media screen and (min-width:320px) and (max-width: 480px) {
+  .container{
+    .content{
+      padding: 24px 16px;
+    }
+  }
+}

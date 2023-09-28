@@ -1,0 +1,114 @@
+@import "src/styles/variables";
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .pageHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid $lightGrayColor;
+
+    .status {
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: 32px;
+      line-height: 48px;
+    }
+  }
+
+  .pageInformation {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    h2 {
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .mainInformation {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      grid-template-rows: repeat(4, 1fr);
+      grid-row-gap: 16px;
+    }
+
+    .conditions {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      h2 {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 22px;
+      }
+      p {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 22px;
+        color: $darkGrayColor;
+      }
+    }
+
+    .disputeBlock {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding-bottom: 16px;
+
+      .inputBlock {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: flex-end;
+
+        & button {
+          margin-top: 8px;
+        }
+      }
+    }
+  }
+
+  .informationRow {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+
+    h4 {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 22px;
+    }
+    h5 {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 22px;
+      color: $darkGrayColor;
+    }
+  }
+
+  .approveParticipation {
+    border-top: 1px solid $lightGrayColor;
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+
+    .leftBlock {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+$desktopMaxWidth: 1440px;
+$backgroundColor: #1C1B1E;
+$backgroundColorModal: #2B292D;
+$darkColorText: #1C1B1E; 
+$mainTextColor: #E6E1E6;
+$lightGrayColor: #CAC3DC;
+$midGrayColor: #A3ADAF;
+$darkGrayColor: #747778;
+$darkTableColor: #1F1B16;
+$yellowColor: #FFA600;
+$greenColor: #27A972;
+$redColor: #FF5B50;
+$violetColor: #865BFD;
+$blueColor: #007AFF;
+
+$white: #FFFFFF;
+$errorColor: #FF5B50;
+$errorColorModal: #FFB4AB;
+$placeholderColor: #818384;
+
+$primaryTonal: #2B292D;
+$primaryTonalHover: rgba(134, 91, 253, 0.1);
+$primaryTonalActive: rgba(134, 91, 253, 0.16);
+
+$primaryPurple: #E6DEFF;
+$primaryPurpleHover: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), $primaryPurple;
+$primaryPurpleActive: linear-gradient(0deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16)), $primaryPurple;
+
+$grayTertiaryHover: linear-gradient(0deg, rgba(46, 49, 50, 0.1), rgba(46, 49, 50, 0.1)), $lightGrayColor;
+$grayTertiaryActive: linear-gradient(0deg, rgba(46, 49, 50, 0.16), rgba(46, 49, 50, 0.16)), $lightGrayColor;

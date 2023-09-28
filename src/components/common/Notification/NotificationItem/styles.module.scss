@@ -1,0 +1,23 @@
+@import "src/styles/variables";
+
+.notificationItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 0 14px;
+  padding: 12px 0 12px;
+  border-bottom: 1px solid $lightGrayColor;
+  cursor: pointer;
+
+  .title {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .date {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: $darkGrayColor;
+  }
+}

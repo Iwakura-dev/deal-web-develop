@@ -1,0 +1,138 @@
+variables:
+  DOCKER_DRIVER: overlay2
+  GIT_STRATEGY: fetch
+  GET_SOURCES_ATTEMPTS: 3
+  IMAGE_DOCKER_BUILD: docker:latest
+  IMAGE_DOCKER_DIND: docker:dind
+  IMAGE_NEXTJS_BUILD: gitlab.icerockdev.com:4567/docker/node/node-16.15:latest
+  ARCHIVE_INIT: init.tar.gz
+  SYNC_FOLDER: docker/sync
+
+stages:
+  - init
+  - build
+  - deploy
+
+.only_dev_definition: &only_dev_definition
+  only:
+    - develop
+    - develop-test
+
+.docker_dind_tag_definition: &docker_dind_tag_definition
+  tags:
+    - docker-dind
+
+.init_template: &init_template
+  <<: *docker_dind_tag_definition
+  stage: init
+  script:
+    # configure env
+    - echo "IMAGE_NEXTJS=${IMAGE_NEXTJS}:${CI_TAG}" >> docker/${BUILD_ENV}/.env
+    # save images name
+    - mkdir -p docker/build
+    - echo "${IMAGE_NEXTJS}" > docker/build/nextjs
+    - echo "${CI_TAG}" >> docker/build/tag
+    - echo "${BUILD_ENV}" >> docker/build/build_env
+    - tar --exclude='.git' -czf ../${ARCHIVE_INIT} ./docker
+    - mv ../${ARCHIVE_INIT} ${ARCHIVE_INIT}
+  artifacts:
+    paths:
+      - ${ARCHIVE_INIT}
+    expire_in: 1 days
+
+.build_next_js_template: &build_next_js_template
+  <<: *docker_dind_tag_definition
+  stage: build
+  image: ${IMAGE_DOCKER_BUILD}
+  services:
+    - ${IMAGE_DOCKER_DIND}
+  cache:
+    paths:
+      - ./node_modules/
+  before_script:
+    - tar -xzf ${ARCHIVE_INIT}
+    - rm ${ARCHIVE_INIT}
+    - export IMAGE_NEXTJS=`cat docker/build/nextjs`
+    - export CI_TAG=`cat docker/build/tag`
+    # build env export
+    - build_env=${BUILD_ENV}_build_env
+    - eval "build_env=\$$build_env"
+    - export $(grep -v '^#' ${build_env} | xargs) # export env to shell
+  script:
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" "${CI_REGISTRY}" --password-stdin
+    - docker pull ${IMAGE_NEXTJS_BUILD}
+    # make
+    - echo "NEXT_PUBLIC_TRON_CONTRACT_ADDRESS=\"$TRON_CONTRACT_ADDRESS\"" >> .env
+    - echo "NEXT_PUBLIC_TRON_TOKEN_ADDRESS=\"$TRON_TOKEN_ADDRESS\"" >> .env
+    - docker build --cache-from ${IMAGE_NEXTJS_BUILD} -t ${IMAGE_NEXTJS}:latest -t ${IMAGE_NEXTJS}:${CI_TAG} --build-arg IMAGE_NEXTJS_BUILD=$IMAGE_NEXTJS_BUILD -f ./docker/common/nextJs.Dockerfile .
+    # push images
+    - docker push ${IMAGE_NEXTJS}:latest
+    - docker push ${IMAGE_NEXTJS}:${CI_TAG}
+
+.deploy_template: &deploy_template
+  <<: *docker_dind_tag_definition
+  stage: deploy
+  image: gitlab.icerockdev.com:4567/docker/k8s-deploy/kubectl
+  when: manual # only manual run by button
+  script:
+    - tar -xzf ${ARCHIVE_INIT}
+    - rm ${ARCHIVE_INIT}
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    # deploy env export
+    - deploy_env=${BUILD_ENV}_deploy_env
+    - eval "deploy_env=\$$deploy_env"
+    - export $(grep -v '^#' ${deploy_env} | xargs) # export env to shell
+    # Remote
+    ## $DEPLOY_KEY is base64 rsa string where \n replaced on _ for valid ENV interpretation
+    - export DEPLOY_KEY=`echo "$SSH_DEPLOY_KEY" | base64 -d`
+    - echo $DEPLOY_KEY | tr _ "\n" | ssh-add - > /dev/null
+    - ssh-keyscan -p$REMOTE_PORT -4 $REMOTE_HOST >> ~/.ssh/known_hosts
+    # prepare
+    - mkdir -p ${SYNC_FOLDER}
+    - cp docker/${BUILD_ENV}/.env ${SYNC_FOLDER}/.env
+    - cp docker/common/docker-compose.yaml ${SYNC_FOLDER}/docker-compose.yaml
+    - cp docker/common/nginx.conf.tmpl ${SYNC_FOLDER}/nginx.conf.tmpl
+    # Deploy
+    - chmod 777 ./docker/common/deploy.sh
+    - ./docker/common/deploy.sh
+
+
+Init Development:
+  <<: *only_dev_definition
+  <<: *init_template
+  before_script:
+    - export IMAGE_NEXTJS=${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_SLUG}/nextjs
+    - export CI_TAG=`date +"dev-%d.%m.%H.%M"`
+  environment:
+    name: dev
+  variables:
+    BUILD_ENV: 'dev'
+
+Build Development:
+  <<: *only_dev_definition
+  <<: *build_next_js_template
+  environment:
+    name: dev
+  variables:
+    BUILD_ENV: 'dev'
+  dependencies:
+    - Init Development
+  needs:
+    - Init Development
+
+
+Deploy Development:
+  <<: *only_dev_definition
+  <<: *deploy_template
+  environment:
+    name: dev
+  variables:
+    BUILD_ENV: 'dev'
+  dependencies:
+    - Init Development
+    - Build Development
+  needs:
+    - Init Development
+    - Build Development

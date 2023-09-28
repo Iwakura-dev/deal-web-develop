@@ -1,0 +1,43 @@
+@import '../../../styles/variables';
+
+.status {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.takerWaiting {
+  color: $blueColor;
+}
+
+.arbiterWaiting {
+  color: $blueColor;
+}
+
+.inProgress {
+  color: $violetColor;
+}
+
+.inReview {
+  color: $yellowColor;
+}
+
+.inDispute {
+  color: $yellowColor;
+}
+
+.done {
+  color: $greenColor;
+}
+
+.resolved {
+  color: $darkGrayColor;
+}
+
+.canceled {
+  color: $redColor;
+}

@@ -1,0 +1,30 @@
+server {
+    listen 443 ssl;
+    server_name ${SERVER_NAME};
+    client_max_body_size 128M;
+
+    ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
+    ssl_session_cache           shared:SSL:20m;
+    ssl_session_timeout         10m;
+    ssl_ciphers  "HIGH:!aNULL:!MD5:!kEDH";
+    ssl_prefer_server_ciphers   on;
+
+    location / {
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_pass http://nextjs_upstream;
+        proxy_ssl_session_reuse off;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+    }
+
+    #SSL
+    ssl_certificate /etc/letsencrypt/cert/live/${SERVER_NAME}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/cert/live/${SERVER_NAME}/privkey.pem;
+}
+
+upstream nextjs_upstream {
+  server nextjs:3000;
+}

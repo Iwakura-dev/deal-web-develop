@@ -1,0 +1,17 @@
+@import "../../../styles/mixins";
+@import '../../../styles/variables';
+
+.dealsButton {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 24px 10px 16px;
+  border:none;
+  cursor:pointer;
+  background: $primaryTonal;
+  border-radius: 12px;
+  color: #605C71;
+  @include large-font;
+}

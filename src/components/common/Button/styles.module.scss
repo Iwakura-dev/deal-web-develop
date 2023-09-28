@@ -1,0 +1,40 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 24px;
+  gap: 8px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+
+  @include large-font;
+
+  &:disabled {
+    background: $lightGrayColor;
+  }
+}
+
+.light {
+  background: $primaryTonal;
+  color: $mainTextColor;
+
+}
+
+.lilac {
+  background: $primaryPurple;
+  color: $darkColorText;
+
+}
+.dark {
+  color: #938F99;
+}
+
+.gray {
+  background: $primaryTonal;
+  color: $lightGrayColor;
+}

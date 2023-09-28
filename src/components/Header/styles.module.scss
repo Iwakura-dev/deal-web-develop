@@ -1,0 +1,100 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  .leftSide {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    a{
+      display: flex;
+      gap: 10px;
+    }
+    h1{
+      color: #CAC3DC;
+      font-family: "Manrope";
+      font-weight: 500;
+      font-size: 36px;
+      font-style: normal;
+      font-weight: 600;
+    }
+  }
+  .rightSide{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    &__dropdown{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      &--icon{
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding-right: 15px;
+        cursor: pointer;
+      }
+      &--eth{
+        position: absolute;
+        z-index: 1;
+        left: 15px;
+      }
+     &--currency{
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding-right: 30px;
+      button{
+        padding: 0;
+        background-color: transparent;
+      }
+     }
+    }
+  }
+}
+.connectWalletResponsive {
+  display: none;
+}
+
+@media screen and (min-width:320px) and (max-width: 480px) {
+  .header{
+    justify-content: center;
+    .leftSide{
+      h1{
+        display: none;
+      }
+      .deals{
+        display: none;
+      }
+    }
+    .rightSide{
+      padding-left: 20px;
+     &__dropdown{
+      &--currency{
+        button:nth-child(3){
+          display: none;
+        }
+      }
+     }
+    }
+  }
+  .connectWallet{
+    display: none;
+  }
+  .connectWalletResponsive {
+    display: block;
+  }
+}
+
+@media all and (min-width:800px) and (max-width: 1200px) {
+  .header{
+    .rightSide{
+      padding-left: 20px;
+    }
+  }
+  .connectWallet{
+    display: none;
+  }
+  .connectWalletResponsive {
+    display: block;
+  }
+}

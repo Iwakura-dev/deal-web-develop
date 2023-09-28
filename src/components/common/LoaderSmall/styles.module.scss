@@ -1,0 +1,16 @@
+@import "../../../styles/variables";
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+
+  & > svg {
+    width: 75px;
+    height: 75px;
+    & > path {
+      fill: $violetColor;
+    }
+  }
+}
